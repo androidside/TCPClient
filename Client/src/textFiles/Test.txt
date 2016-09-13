@@ -1,7 +1,6 @@
-#AUTO;
+#AUTO
 #A;
-MG "Hello20";
+MG "Hello26";
 WT100;
 JP#A;
-EN
-\
+EN;

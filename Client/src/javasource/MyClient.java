@@ -62,7 +62,7 @@ public class MyClient {
 		echoSocket.close();
 	}
 
-	static void readFileAndDownload(String fileName, PrintWriter out) throws InterruptedException{
+	static void readFileAndDownload(String fileName, PrintWriter out) throws InterruptedException, IOException{
 		boolean endOfFile = false;
 		InputStream is = null;
 		int c = 0;
@@ -88,7 +88,7 @@ public class MyClient {
 
 			if(c>0){
 
-				//System.out.print((char)(buffer[0]));
+				System.out.print((char)(buffer[0]));
 				out.print((char)buffer[0]);
 			}
 			else{	
@@ -99,13 +99,17 @@ public class MyClient {
 		}while(endOfFile == false);
 		Thread.sleep(2000);
 		out.println(new String("\\"));
+		System.out.println(new String("\\"));
 		Thread.sleep(2000);
 		out.println(new String("BP"));
+		System.out.println(new String("BP"));
 		System.out.println("Program Burned!");
 		Thread.sleep(3000);
 		System.out.println("Resetting controller..");
 		out.println(new String("RS"));
+		System.out.print(new String("RS"));
 		Thread.sleep(4000);
+		is.close();
 
 		System.out.println("End of file reached !");
 
