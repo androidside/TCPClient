@@ -1,0 +1,7 @@
+#AUTO;
+#A;
+MG "Hello20";
+WT100;
+JP#A;
+EN
+\
