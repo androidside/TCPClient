@@ -1,0 +1,47 @@
+#AUTO
+'
+'TM0
+' comm initialization
+EO 0,0;       ' disable echoing
+LZ0;          ' enable the leading zeros
+PF 10;         ' set length of position number to 10 integer digits
+'CF S;        ' if active, set the serial port as the port for unsollicited
+              ' messages (could confuse the crio) instead of the ethernet port
+CW2;          ' sets the MSB so that the data can read from 3rd-party software 
+'
+' finished communication initialization
+'
+' motor initialization
+MT -2,-2;     ' stepper motor
+CEA=4;
+LC 1,1;       ' Low current mode
+' Encoder setup What Robin suggested : SIA=1,25,13,0<-11>2
+SIA=1,13,13,0<9>1;' see manual for more details
+'
+SHA;          ' start the motor A
+SHB;          ' start the motor B
+AC 20000,20000; ' sets low accelarations
+DC 20000,20000; ' sets low decelerationsLS
+
+FLA=620000;   ' Forward limit to bracket the wheel position
+BLA=-620000;  ' Backward limit - wheels will give an error when trying to go
+              ' beyond FL and BL
+'
+JGA=0;JGB=0;      ' go to zero speed
+BG;          ' begin command
+
+EN;
+'
+'
+#A
+TP=_TPA;
+IF((_TPA<7901) & (_TPA>5853));
+v1=_TPA;
+MG "We are out of bounds",v1; 'MF command
+ENDIF;
+JP#A; ' begin command
+
+
+':STA
+':DPA=0
+':DPA=1000

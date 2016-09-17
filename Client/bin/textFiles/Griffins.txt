@@ -1,0 +1,94 @@
+#AUTO
+' comm initialization
+EO 0,0,0; ' disable echoing
+LZ0; ' enable the leading zeros
+PF10; ' set length of position number to 10 integer digits
+'CF S; ' if active, set the serial port as the port for unsollicited
+' messages (could confuse the crio) instead of the ethernet port
+CW2; ' sets the MSB so that the data can read from 3rd-party software
+'
+JS#CFG; ' Jump to configuration program
+MOA;MOB;MOC; ' Turn off motors for safety
+BX 1,1,1; ' Initialize sinusoidal drive on axes A and B
+'BZ 1,1
+'Original value:
+'SPA=1000000 ~100000/(16777216/360) 2.14 deg/sec
+'SPB=1000000
+SPA=10000;SPB=10000;SPC=10000;
+SHA;SHB;SHC;
+WT1000
+PTA=1;
+PTB=1;
+PTC=1;
+' Turn motors on
+'JGA= 0;
+'JGB=0; ' Start axes in preparation of JG command
+'PAA=0;
+'PAB=0;
+BGA;BGB;BGC;
+WT1000;
+'PTA=1;'PTB=1;
+'WT1000;
+EN
+' It is normal to lose connection when first powering up or resetting
+' This is likely due to the 500ms timeout of the BX initialization command
+#CFG
+TM 1000.0000; ' Time sample
+AG 1, 1, 1; ' amplifier gain
+OF 0.0000, 0.0000, 0.0000; ' Voltage offset
+AU 4.0, 4.0, 4.0; ' AmpliBPfier current loop
+LD 0, 0, 0
+OE 1, 1, 1; ' Turn off on error (prevent runaway)
+CN -1.0000, -1.0000, -1.0000
+MT 1.0, 1.0, 1.0; ' All axes are Brushless DC
+BW 0, 0, 0
+FL 2147483647, 2147483647, 2147483647
+BL -2147483648, -2147483648, -2147483648
+'Tuning Setup Original Values
+'KP 6.00, 6.00, 6.00
+'KI 0.5000, 0.5000, 0.5000
+'KD 40.00, 40.00, 40.00
+KP 7.00, 7.00, 7.00
+KI 0.01, 0.01, 0.01
+KD 0.00, 0.00, 0.00
+FA 0.0000
+FV 0, 0, 0
+IL 9.9982, 9.9982, 9.9982
+PL 0.0000, 0.0000, 0.0000
+NB 0.5, 0.5, 0.5
+NF 0, 0, 0
+'Limits
+TK 0.0000, 0.0000, 0.0000
+TL 5.000, 5.000, 5.000
+ER 100000, 100000, 100000
+'Motion Settings
+'Original values
+'AC 27961344, 27961344, 27961344
+'DC 27961344, 27961344, 27961344
+AC 279552, 279552, 279552
+DC 279552, 279552, 279552
+'AC 27961, 27961, 27961
+'DC 27961, 27961, 27961
+'SP 23300, 23300, 23300
+SP 2330168, 2330168, 2330168
+SD 256000, 256000, 256000
+HV 256, 256, 256
+LC 0, 0, 0
+YA 2, 2, 2
+BM 1398101.3333, 1398101.3333, 1398101.3333
+'BM 5592405.3333, 5592405.3333, 5592405.3333
+'BM 180000,180000,180000
+BAA
+BAB
+BAC
+BX<500
+BZ<500
+BI 0, 0, 0
+'BiSS Encoder settings
+SSA=1,-26,27,2<4
+SSB=1,-26,27,2<4
+SSC=1,-26,27,2<4
+SYA=0
+SYB=0
+SYC=0
+EN

@@ -1,6 +1,0 @@
-#AUTO
-#A;
-MG "Hello26";
-WT100;
-JP#A;
-EN;

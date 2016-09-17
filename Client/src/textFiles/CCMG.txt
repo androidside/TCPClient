@@ -1,0 +1,90 @@
+#AUTO
+'JG 409600
+
+' comm initialization
+EO 0,0;       ' disable echoing
+LZ0;          ' enable the leading zeros
+PF10;         ' set length of position number to 10 integer digits
+'CF S;        ' if active, set the serial port as the port for unsollicited
+          ' messages (could confuse the crio) instead of the ethernet port
+CW2;          ' sets the MSB so that the data can read from 3rd-party software 
+'
+'
+' limits and errors
+OE 0,0;             ' activate error - could mean runaway
+ER 25000,25000;   ' set error limits on position
+'WE CAN ALSO SET THE ERROR TO -1 !!!
+'
+' Motor and encoder init
+MO A
+MO B
+MT 1,1;             ' these are brushless motors
+cts= 8192
+poles= 4
+CE 2,2;             ' encoder is reverse quadrature
+BA A
+BA B
+BMA=cts/poles
+BMB=cts/poles
+WT2;
+'
+BXA=1
+BXB=1
+'BXA=-1<5
+'BXB=-1<5
+
+'
+'
+'
+' Motion settings
+AC 1024,1024
+DC 2048,2048
+KP 5,5
+KD 50,50
+'
+' start
+SHA
+SHB
+' corresponds to 8192*3000/60
+  MG "Getting Ready to Jog";
+JG 0,0
+BGA
+BGB
+SHA
+SHB
+'
+#loop
+vA=_TEA;
+'MG vA;
+vB=_TEB;
+'MG vB;
+IF( (vA>20000) | (vA<-20000) );
+  MG "Error on A exceeded";
+  JG 0,0;
+  JP#wait 
+ENDIF;
+IF( (vB>20000) | (vB<-20000) );
+  MG "Error on B exceeded";
+  JG 0,0;
+  JP#wait 
+ENDIF;
+JP#loop
+
+#wait
+IF( (_TVA=0) & (_TVB=0) );
+ WT 1000;
+ MG "Jogging to 400000 again"
+ ST;
+ WT 1000;
+ DP 0,0;
+ WT 1000;
+'JG 400000,400000;
+ WT 1000;
+ BG
+ JP#loop
+ELSE;
+ MG "Waiting"
+ WT 1000;
+ JP#wait
+'downloaded!
+EN
